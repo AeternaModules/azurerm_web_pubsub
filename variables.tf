@@ -28,21 +28,21 @@ EOT
     name                          = string
     resource_group_name           = string
     sku                           = string
-    aad_auth_enabled              = optional(bool, true)
-    capacity                      = optional(number, 1)
-    local_auth_enabled            = optional(bool, true)
-    public_network_access_enabled = optional(bool, true)
+    aad_auth_enabled              = optional(bool)   # Default: true
+    capacity                      = optional(number) # Default: 1
+    local_auth_enabled            = optional(bool)   # Default: true
+    public_network_access_enabled = optional(bool)   # Default: true
     tags                          = optional(map(string))
-    tls_client_cert_enabled       = optional(bool, false)
+    tls_client_cert_enabled       = optional(bool) # Default: false
     identity = optional(object({
       identity_ids = optional(set(string))
       type         = string
     }))
     live_trace = optional(object({
-      connectivity_logs_enabled = optional(bool, true)
-      enabled                   = optional(bool, true)
-      http_request_logs_enabled = optional(bool, true)
-      messaging_logs_enabled    = optional(bool, true)
+      connectivity_logs_enabled = optional(bool) # Default: true
+      enabled                   = optional(bool) # Default: true
+      http_request_logs_enabled = optional(bool) # Default: true
+      messaging_logs_enabled    = optional(bool) # Default: true
     }))
   }))
 }
