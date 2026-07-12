@@ -1,3 +1,7 @@
+output "web_pubsubs_id" {
+  description = "Map of id values across all web_pubsubs, keyed the same as var.web_pubsubs"
+  value       = { for k, v in azurerm_web_pubsub.web_pubsubs : k => v.id }
+}
 output "web_pubsubs_aad_auth_enabled" {
   description = "Map of aad_auth_enabled values across all web_pubsubs, keyed the same as var.web_pubsubs"
   value       = { for k, v in azurerm_web_pubsub.web_pubsubs : k => v.aad_auth_enabled }
