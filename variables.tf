@@ -28,31 +28,23 @@ EOT
     name                          = string
     resource_group_name           = string
     sku                           = string
-    aad_auth_enabled              = optional(bool)   # Default: true
-    capacity                      = optional(number) # Default: 1
-    local_auth_enabled            = optional(bool)   # Default: true
-    public_network_access_enabled = optional(bool)   # Default: true
+    aad_auth_enabled              = optional(bool)
+    capacity                      = optional(number)
+    local_auth_enabled            = optional(bool)
+    public_network_access_enabled = optional(bool)
     tags                          = optional(map(string))
-    tls_client_cert_enabled       = optional(bool) # Default: false
+    tls_client_cert_enabled       = optional(bool)
     identity = optional(object({
       identity_ids = optional(set(string))
       type         = string
     }))
     live_trace = optional(object({
-      connectivity_logs_enabled = optional(bool) # Default: true
-      enabled                   = optional(bool) # Default: true
-      http_request_logs_enabled = optional(bool) # Default: true
-      messaging_logs_enabled    = optional(bool) # Default: true
+      connectivity_logs_enabled = optional(bool)
+      enabled                   = optional(bool)
+      http_request_logs_enabled = optional(bool)
+      messaging_logs_enabled    = optional(bool)
     }))
   }))
-  validation {
-    condition = alltrue([
-      for k, v in var.web_pubsubs : (
-        contains(["Premium_P1", "Premium_P2", "Standard_S1", "Free_F1"], v.sku)
-      )
-    ])
-    error_message = "must be one of: Premium_P1, Premium_P2, Standard_S1, Free_F1"
-  }
   # --- Unconfirmed validation candidates, derived from azurerm_web_pubsub's provider source ---
   # Not auto-enabled: either a bespoke provider validator we can't safely translate,
   # or a path that crosses a list-typed block (needs its own for_each wrapping).
@@ -75,6 +67,9 @@ EOT
   #   source:    [from resourcegroups.ValidateName] !matched
   # path: location
   #   source:    location.EnhancedValidate: no recognizable `if ... { errors = append(...) }` pattern - read it by hand
+  # path: sku
+  #   condition: contains(["Premium_P1", "Premium_P2", "Standard_S1", "Free_F1"], value)
+  #   message:   must be one of: Premium_P1, Premium_P2, Standard_S1, Free_F1
   # path: capacity
   #   source:    validation.IntInSlice(...) - no translation rule yet, add one
   # path: identity.type
